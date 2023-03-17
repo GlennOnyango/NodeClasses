@@ -1,7 +1,10 @@
 const products = require("../models/Product");
 
 exports.getAddProduct = (req, res, next) => {
-  res.render("admin/add-product", { docTitle: "Add Product", path: "/admin/add-product" });
+  res.render("admin/add-product", {
+    docTitle: "Add Product",
+    path: "/admin/add-product",
+  });
 };
 
 exports.postAddProduct = (req, res, next) => {
@@ -11,11 +14,13 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  products.fetchAll((products) => {
-    res.render("shop/product-list", {
-      prods: products,
-      docTitle: "Shop",
-      path: "/",
-    });
-  });
+  Product.fetchAll()
+    .then(([row, fieldData]) => {
+      res.render("shop/product-list", {
+        prods: row,
+        pageTitle: "Shop",
+        path: "/",
+      });
+    })
+    .catch((err) => console.log(err));
 };
